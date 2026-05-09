@@ -4,99 +4,7 @@ import { colors } from '../color';
 import global from '../global';
 import { formatNumber } from '../number';
 import { calculateShapeRarity, calculateShapeType } from '../shapeTypes';
-
-class IncreaseEvolutionTier implements Upgrade {
-	button = new Button(() => {
-		global.score -= this.cost();
-		global.layersCaps[2] += 1;
-	}, colors.triangle);
-
-	getLabel(): string {
-		return '+1 Evolution (' + (global.layersCaps[2] - 1) + '/5)';
-	}
-
-	max() {
-		return global.layersCaps[2] > 5;
-	}
-
-	cost() {
-		return Math.round(Math.pow(4.1, global.layersCaps[2] + 10));
-	}
-
-	getSecondary(): string {
-		return this.max() ? 'MAX' : formatNumber(this.cost()) + ' score';
-	}
-
-	isDisabled(): boolean {
-		return this.max() || global.score < this.cost();
-	}
-}
-
-class NerfEvolutionTime implements Upgrade {
-	button = new Button(() => {
-		global.score -= this.cost();
-		global.triangleEvoTimeUpgrades += 1;
-		global.shapeEvoNerf[2] *= 1.25;
-	}, colors.triangle);
-
-	getLabel(): string {
-		return (
-			'Decrease Evolution Time (' +
-			formatNumber(global.shapeEvoNerf[2]) +
-			'x less)'
-		);
-	}
-
-	requirement() {
-		return global.layersCaps[2] <= 1;
-	}
-
-	cost() {
-		return Math.round(Math.pow(7, global.triangleEvoTimeUpgrades + 5));
-	}
-
-	getSecondary(): string {
-		return (
-			formatNumber(this.cost()) + ' score and at least 1 evolution upgrade'
-		);
-	}
-
-	isDisabled(): boolean {
-		return this.requirement() || global.score < this.cost();
-	}
-}
-
-class ShapeTypeBuff implements Upgrade {
-	button = new Button(() => {
-		global.score -= this.cost();
-		global.triangleBuffUpgrades += 1;
-		global.shapeTypeBuff *= 1.151;
-	}, colors.triangle);
-
-	getLabel(): string {
-		return (
-			'Increase Possibility of New Shapes (' +
-			formatNumber(global.shapeTypeBuff) +
-			'x)'
-		);
-	}
-
-	max() {
-		return global.triangleBuffUpgrades >= 10;
-	}
-
-	cost() {
-		return Math.round(Math.pow(2, global.triangleBuffUpgrades + 22));
-	}
-
-	getSecondary(): string {
-		return this.max() ? 'MAX' : formatNumber(this.cost()) + ' score.';
-	}
-
-	isDisabled(): boolean {
-		return global.score < this.cost() || this.max();
-	}
-}
+import { makeShapeUpgrades } from './factory';
 
 class UnlockLegendary implements Upgrade {
 	button = new Button(() => {
@@ -156,9 +64,18 @@ class UnlockPentagons implements Upgrade {
 }
 
 export const triangleUpgrades = [
-	new IncreaseEvolutionTier(),
-	new NerfEvolutionTime(),
-	new ShapeTypeBuff(),
+	...makeShapeUpgrades(
+		2,
+		5,
+		'triangle',
+		x => Math.round(Math.pow(4.1, x + 10)),
+		x => Math.pow(7, x + 5),
+		{
+			mult: 1.151,
+			max: 10,
+			cost: x => Math.pow(2, x + 22)
+		}
+	),
 	new UnlockLegendary(),
 	new UnlockPentagons()
 ];

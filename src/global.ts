@@ -2,15 +2,27 @@ export default {
 	score: 0,
 
 	spawnIntervalUpgrades: 0,
-	squareBuffUpgrades: 0,
-	triangleBuffUpgrades: 0,
-	pentagonBuffUpgrades: 0,
 	shinyChanceUpgrades: 0,
-	eggEvoTimeUpgrades: 0,
-	squareEvoTimeUpgrades: 0,
-	triangleEvoTimeUpgrades: 0,
-	pentagonEvoTimeUpgrades: 0,
 	arenaFovUpgrades: 0,
+	evoTimeUpgrades: {
+		[0]: 0,
+		[1]: 0,
+		[2]: 0,
+		[3]: 0,
+		[4]: 0,
+		[5]: 0,
+		[6]: 0,
+		[7]: 0
+	} as Record<number, number>,
+	buffUpgrades: {
+		[1]: 0,
+		[2]: 0,
+		[3]: 0,
+		[4]: 0,
+		[5]: 0,
+		[6]: 0,
+		[7]: 0
+	} as Record<number, number>,
 
 	rarityCap: 0, // MAX: 3
 	shapesSpawnInterval: 2000,
