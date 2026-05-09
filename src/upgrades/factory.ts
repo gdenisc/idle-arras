@@ -20,7 +20,7 @@ export abstract class EvolutionTierUpgrade implements Upgrade {
 	}
 
 	getSecondary(): string {
-		return this.amount() >= this.max()
+		return this.amount() > this.max()
 			? 'MAX'
 			: formatNumber(this.cost(this.amount())) + ' score';
 	}
