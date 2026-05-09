@@ -26,6 +26,6 @@ export abstract class EvolutionTierUpgrade implements Upgrade {
 	}
 
 	isDisabled(): boolean {
-		return this.amount() >= this.max() || global.score < this.cost(this.amount());
+		return this.amount() > this.max() || global.score < this.cost(this.amount());
 	}
 }

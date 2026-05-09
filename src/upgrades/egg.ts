@@ -61,7 +61,7 @@ class NerfEvolutionTime implements Upgrade {
 	}
 
 	isDisabled(): boolean {
-		return this.requirement() || !this.max() || global.score < this.cost();
+		return this.requirement() || this.max() || global.score < this.cost();
 	}
 }
 
