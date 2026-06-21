@@ -1,4 +1,6 @@
 export default {
+	version: 1,
+
 	score: 0,
 
 	spawnIntervalUpgrades: 0,
